@@ -1,2 +1,2 @@
 # umsys
-umSYS is A university management system
+umSYS is a university management system, using expressjs, nodejs and ejs templating engine
