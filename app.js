@@ -96,11 +96,20 @@ app.get('/logout', function(req,res){
     res.redirect('/');
 });
 
+// Dashboard Routes
+
 app.get('/dashboard',isLoggedIn, (req, res) => {
     res.render("dashboard", {
         title: 'Dashboard'
     });
 });
+
+app.get('/recruitment', isLoggedIn, (req, res) => {
+    res.render("recruitment", {
+        title: 'Recruitment'
+    });
+});
+
 // Setup our admin user
 app.get('/setup', async(req,res) => {
     const exists = await User.exists({ username: "gillmour" });
