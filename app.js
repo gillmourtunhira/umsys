@@ -18,7 +18,7 @@ mongoose.connect("mongodb://localhost:27017/umsys-db", {
 // Middleware
 //app.engine('ejs', ejs({ extname: '.ejs' }));
 app.set( 'view engine', 'ejs' );
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: "hit_key",
     resave: false,
@@ -65,6 +65,6 @@ app.get('/', (req,res) => {
     });
 });
 
-app.listen(5000, () => {
-    console.log('Server running at post:', 5000);
+app.listen(4000, () => {
+    console.log('Server running at post:', 4000);
 })
