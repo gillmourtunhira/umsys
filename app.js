@@ -1,3 +1,4 @@
+require('dotenv').config();
 const User = require('./models/user');
 
 const express       = require('express');
@@ -10,7 +11,9 @@ const ejs           = require('ejs');
 const path          = require('path');
 const app           = express();
 
-mongoose.connect("mongodb+srv://artisan:artisandev@nodetuts.c3h20.mongodb.net/umsys?retryWrites=true&w=majority", {
+const URI = process.env.DB_URI;
+
+mongoose.connect(URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
