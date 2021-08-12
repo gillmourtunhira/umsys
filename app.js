@@ -10,7 +10,7 @@ const ejs           = require('ejs');
 const path          = require('path');
 const app           = express();
 
-mongoose.connect("mongodb://localhost:27017/umsys-db", {
+mongoose.connect("mongodb+srv://artisan:artisandev@nodetuts.c3h20.mongodb.net/umsys?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -59,12 +59,75 @@ passport.use(new localStrategy(function (username, password, done){
     });
 }));
 
-app.get('/', (req,res) => {
+// Check if user is logged in
+function isLoggedIn(req, res, next){
+    if( req.isAuthenticated() ) return next();
+    res.redirect('/login');
+}
+
+// Check if user is logged out
+function isLoggedOut(req, res, next){
+    if( !req.isAuthenticated() ) return next();
+    res.redirect('/');
+}
+
+// Routes
+app.get('/', isLoggedIn, (req,res) => {
     res.render("index", {
         title: "Home"
     });
 });
 
-app.listen(4000, () => {
-    console.log('Server running at post:', 4000);
+app.get('/login', isLoggedOut, (req,res) => {
+    const response = {
+        title: "Login",
+        error: req.query.error
+    }
+    res.render( "login", response );
+});
+
+app.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login?error=true'
+}));
+
+app.get('/logout', function(req,res){
+    req.logout();
+    res.redirect('/');
+});
+
+app.get('/dashboard',isLoggedIn, (req, res) => {
+    res.render("dashboard", {
+        title: 'Dashboard'
+    });
+});
+// Setup our admin user
+app.get('/setup', async(req,res) => {
+    const exists = await User.exists({ username: "gillmour" });
+
+    if (exists) {
+        console.log("User Exists1");
+        res.redirect('/login');
+        return;
+    };
+
+    bcrypt.genSalt(10, function(err, salt) {
+        if(err) return next(err);
+        bcrypt.hash("tunhira", salt, function(err, hash){
+            if(err) return next(err);
+
+            const newAdmin = new User({
+                username: "gillmour",
+                password: hash
+            });
+
+            newAdmin.save();
+
+            res.redirect('/login');
+        });
+    });
+});
+
+app.listen(3000, () => {
+    console.log('Server running at post:', 3000);
 })

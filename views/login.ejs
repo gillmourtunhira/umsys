@@ -1,0 +1,24 @@
+<%- include('partials/header.ejs'); %>
+<div class="app">
+    <h4>umSYS</h4><span>1.0</span>
+    <form action="/login" method="post">
+        <div>
+            <% if (error) { %>
+                <p class="err--msg">Username or password is incorrect.</p>
+                <% } %> 
+            <h1>Login</h1>
+        </div>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" placeholder="Enter your username" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" placeholder="Enter your password" required />
+        </div>
+        <div>
+            <input type="submit" value="Login">
+        </div>
+    </form>
+</div>
+<%- include('partials/header.ejs'); %> 

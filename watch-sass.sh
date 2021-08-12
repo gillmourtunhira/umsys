@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sass --watch ./public/umsys.scss ./public/umsys.css --style compressed
+sass --watch ./public/css/umsys.scss ./public/css/umsys.css --style compressed
